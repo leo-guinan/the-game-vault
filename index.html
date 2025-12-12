@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The Game Vault — an invite-only Discord clubhouse for kids who love games. $20 one-time membership + parent verification Zoom." />
+  <title>The Game Vault</title>
+
+  <style>
+    :root{
+      --bg: #070A12;
+      --panel: #0D1224;
+      --panel2:#0B1020;
+      --text: #EAF0FF;
+      --muted:#A9B4D0;
+      --line: rgba(255,255,255,.10);
+      --accent:#7CFFB2;   /* vault green */
+      --accent2:#F6D365;  /* warm gold */
+      --danger:#FF5C7A;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 900px at 20% -10%, rgba(124,255,178,.18), transparent 60%),
+                  radial-gradient(900px 700px at 95% 5%, rgba(246,211,101,.14), transparent 55%),
+                  radial-gradient(900px 700px at 60% 120%, rgba(124,255,178,.10), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      line-height:1.5;
+    }
+
+    a{ color: inherit; }
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 28px 18px 70px; }
+
+    /* Top bar */
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding: 10px 0 24px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+    }
+    .logo{
+      width:40px; height:40px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(124,255,178,.95), rgba(246,211,101,.95));
+      display:grid; place-items:center; color:#0B1020; font-weight:900;
+      box-shadow: 0 12px 30px rgba(124,255,178,.18);
+    }
+    .brand h1{ margin:0; font-size: 16px; letter-spacing:.2px; }
+    .brand p{ margin:0; font-size: 12px; color: var(--muted); }
+
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration:none;
+      font-size: 13px;
+    }
+    .chip:hover{ background: rgba(255,255,255,.07); color: var(--text); }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 6px;
+    }
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .heroMain{ padding: 26px; position:relative; }
+    .kicker{
