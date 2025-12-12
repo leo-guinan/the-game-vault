@@ -92,3 +92,460 @@
 
     .heroMain{ padding: 26px; position:relative; }
     .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      padding: 7px 12px;
+      border-radius: 999px;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(124,255,178,.12);
+    }
+
+    .heroMain h2{
+      margin: 14px 0 8px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height:1.08;
+      letter-spacing: -0.6px;
+    }
+    .heroMain .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 60ch;
+    }
+
+    .badges{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin: 14px 0 22px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .badge span{
+      width:18px; height:18px; border-radius:6px;
+      display:grid; place-items:center;
+      background: rgba(124,255,178,.12);
+      color: var(--accent);
+      font-weight:800;
+    }
+
+    .ctaRow{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      border:0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 700;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0B1020;
+      box-shadow: 0 16px 40px rgba(124,255,178,.16);
+    }
+    .btnSecondary{
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+    .finePrint{
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .heroSide{ padding: 20px; display:flex; flex-direction:column; gap:12px; }
+    .priceBox{
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+    }
+    .price{
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .price strong{ font-size: 30px; letter-spacing:-.3px; }
+    .price small{ color: var(--muted); font-size: 13px; }
+    .includes{ margin:0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+    .includes li{ margin: 8px 0; }
+
+    .steps{
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .step{
+      display:flex; gap:12px; padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .step:last-child{ border-bottom: 0; }
+    .num{
+      width:28px; height:28px; border-radius: 10px;
+      background: rgba(124,255,178,.12);
+      color: var(--accent);
+      display:grid; place-items:center;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+    .step b{ display:block; }
+    .step p{ margin:2px 0 0; color: var(--muted); font-size: 13px; }
+
+    /* Sections */
+    section{ margin-top: 26px; }
+    .sectionTitle{
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing:-.2px;
+    }
+    .sectionSub{ margin:0 0 16px; color: var(--muted); max-width: 70ch; }
+
+    .grid3{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 900px){ .grid3{ grid-template-columns: 1fr; } }
+
+    .tile{
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .tile h4{ margin: 0 0 8px; font-size: 16px; }
+    .tile p{ margin:0; color: var(--muted); font-size: 14px; }
+
+    .callout{
+      padding: 18px;
+      border-radius: var(--radius2);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(124,255,178,.10), rgba(255,255,255,.02));
+    }
+
+    .split{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px){ .split{ grid-template-columns: 1fr; } }
+
+    /* FAQ */
+    .faq{ margin-top: 8px; }
+    details{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 700;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details p{ color: var(--muted); margin: 10px 0 0; }
+
+    /* Footer */
+    footer{
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      gap: 12px;
+      justify-content: space-between;
+      flex-wrap:wrap;
+    }
+    .miniLinks a{ color: var(--muted); text-decoration:none; margin-right: 12px; }
+    .miniLinks a:hover{ color: var(--text); }
+
+    /* Notice bar */
+    .notice{
+      display:none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(124,255,178,.25);
+      background: rgba(124,255,178,.08);
+      color: var(--text);
+    }
+    .notice strong{ color: var(--accent); }
+
+    /* Tiny icon */
+    .arrow{ font-weight: 900; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#top" aria-label="The Game Vault home">
+        <div class="logo">GV</div>
+        <div>
+          <h1>The Game Vault</h1>
+          <p>Invite-only Discord for kids who love games</p>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Site navigation">
+        <a class="chip" href="#how">How it works</a>
+        <a class="chip" href="#safety">Safety</a>
+        <a class="chip" href="#faq">FAQ</a>
+        <a class="chip" href="#join">Join</a>
+      </nav>
+    </div>
+
+    <main id="top" class="hero">
+      <div class="card heroMain">
+        <div class="kicker"><span class="dot"></span> Parent-verified • Moderated • Invite-only</div>
+
+        <h2>A safe Discord clubhouse<br/>for kids who love games.</h2>
+        <p class="sub">
+          One-time <b>$20</b> membership. After checkout, we email a parent/guardian to schedule a quick Zoom
+          to verify age, answer questions, and introduce your child to the server host.
+        </p>
+
+        <div class="badges" aria-label="Trust badges">
+          <div class="badge"><span>✓</span> No public invite links</div>
+          <div class="badge"><span>✓</span> Clear rules</div>
+          <div class="badge"><span>✓</span> Active moderation</div>
+          <div class="badge"><span>✓</span> Parent contact path</div>
+        </div>
+
+        <div class="ctaRow" id="join">
+          <!-- Replace these with your real links -->
+          <a class="btn btnPrimary" id="buyBtn" href="https://example.com/stripe-payment-link" target="_blank" rel="noreferrer">
+            Join for $20 <span class="arrow">→</span>
+          </a>
+          <a class="btn btnSecondary" id="howBtn" href="#how">How it works</a>
+          <a class="btn btnSecondary" id="zoomBtn" href="https://example.com/calendly-parent-zoom" target="_blank" rel="noreferrer">
+            Book Parent Zoom
+          </a>
+        </div>
+
+        <div class="notice" id="notice"></div>
+
+        <p class="finePrint">
+          Parents/guardians: You’ll receive an email after checkout with next steps. We do not provide Discord access until the verification call is complete.
+        </p>
+      </div>
+
+      <aside class="card heroSide" aria-label="Membership details">
+        <div class="priceBox">
+          <div class="price">
+            <strong>$20</strong>
+            <small>one-time payment</small>
+          </div>
+          <ul class="includes">
+            <li>Invite-only Discord access</li>
+            <li>Parent verification Zoom (≈10 min)</li>
+            <li>Onboarding checklist + rules</li>
+            <li>Events & hangouts</li>
+          </ul>
+        </div>
+
+        <div class="steps" id="how">
+          <h3 style="margin:0 0 10px; font-size:16px;">How it works</h3>
+
+          <div class="step">
+            <div class="num">1</div>
+            <div>
+              <b>Pay $20 once</b>
+              <p>Use the checkout link on this page.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">2</div>
+            <div>
+              <b>Parent email confirmation</b>
+              <p>We email you with a simple booking link.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">3</div>
+            <div>
+              <b>Quick Zoom verification</b>
+              <p>Verify age + meet the host + ask questions.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">4</div>
+            <div>
+              <b>Discord invite unlocked</b>
+              <p>We send a private invite and onboarding steps.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <section>
+      <h3 class="sectionTitle">What kids get inside</h3>
+      <p class="sectionSub">A friendly, moderated space to talk games, find teammates, and hang out—without the chaos of public servers.</p>
+
+      <div class="grid3">
+        <div class="tile">
+          <h4>Hangouts & chat</h4>
+          <p>Text + voice channels built for chilling, not drama.</p>
+        </div>
+        <div class="tile">
+          <h4>Find teammates</h4>
+          <p>Meet kids who play what you play and team up.</p>
+        </div>
+        <div class="tile">
+          <h4>Events</h4>
+          <p>Game nights, challenges, and weekly prompts.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety" class="split">
+      <div class="callout">
+        <h3 class="sectionTitle" style="margin-bottom:6px;">Safety is the product.</h3>
+        <p class="sectionSub" style="margin-bottom:0;">
+          The Game Vault is intentionally private. Everyone joins through a parent/guardian verification step,
+          and we keep clear rules with active moderation.
+        </p>
+      </div>
+
+      <div class="tile">
+        <h4 style="margin-top:0;">Safety & moderation basics</h4>
+        <ul class="includes">
+          <li><b>Invite-only:</b> no public links</li>
+          <li><b>Verification call:</b> parent/guardian required</li>
+          <li><b>No personal info:</b> no addresses, schools, phone numbers</li>
+          <li><b>Zero tolerance:</b> bullying/harassment/slurs</li>
+          <li><b>Reporting path:</b> kids + parents can contact an admin</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="tile">
+        <h3 class="sectionTitle">Meet the host</h3>
+        <p class="sectionSub">
+          The server is hosted by <b>(your son)</b>, a kid who loves games and community. He welcomes new members,
+          runs events, and keeps the vibe fun—while an adult admin oversees safety and moderation.
+        </p>
+        <p class="sectionSub" style="margin-bottom:0;">
+          On the parent Zoom, we’ll do a quick intro and answer any questions.
+        </p>
+      </div>
+
+      <div class="tile">
+        <h3 class="sectionTitle">One-time membership</h3>
+        <p class="sectionSub">
+          Pay once, get access after verification. No recurring charges.
+        </p>
+        <div class="ctaRow">
+          <a class="btn btnPrimary" href="https://example.com/stripe-payment-link" target="_blank" rel="noreferrer">
+            Join for $20 <span class="arrow">→</span>
+          </a>
+          <a class="btn btnSecondary" href="https://example.com/calendly-parent-zoom" target="_blank" rel="noreferrer">
+            Book Parent Zoom
+          </a>
+        </div>
+        <p class="finePrint">Replace the example links in the HTML with your Stripe + Calendly links.</p>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h3 class="sectionTitle">FAQ</h3>
+      <p class="sectionSub">If you’re a parent/guardian, you’re the customer. Questions are welcome.</p>
+
+      <div class="faq">
+        <details>
+          <summary>What ages is this for?</summary>
+          <p>Set your intended range here (example: ages 10–14). We confirm during the parent verification call.</p>
+        </details>
+
+        <details>
+          <summary>What happens on the Zoom call?</summary>
+          <p>It’s a short (≈10 min) parent/guardian call to verify age, review rules, and do a friendly intro to the host. Discord access is sent after the call.</p>
+        </details>
+
+        <details>
+          <summary>Do parents need Discord?</summary>
+          <p>No. Parents don’t need to join Discord—just an email address to receive updates and a way to contact an admin if needed.</p>
+        </details>
+
+        <details>
+          <summary>How is the server moderated?</summary>
+          <p>Invite-only access, clear rules, and active moderation. We remove members who break rules, especially around bullying, harassment, or sharing personal info.</p>
+        </details>
+
+        <details>
+          <summary>Is this a one-time payment?</summary>
+          <p>Yes — $20 one time. No monthly subscription.</p>
+        </details>
+
+        <details>
+          <summary>What’s the refund policy?</summary>
+          <p>Add your policy here (example: “If we can’t complete verification or it’s not a fit, we’ll refund within 7 days.”).</p>
+        </details>
+
+        <details>
+          <summary>How can parents reach you?</summary>
+          <p>Add your support email below. You can also include a contact form if you want, but GitHub Pages is easiest with email.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <div style="font-weight:700; color: var(--text);">The Game Vault</div>
+        <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
+      </div>
+
+      <div class="miniLinks" aria-label="Footer links">
+        <a href="#safety">Safety</a>
+        <a href="#faq">FAQ</a>
+        <a href="#join">Join</a>
+      </div>
+
+      <div>© <span id="year"></span> The Game Vault</div>
+    </footer>
+  </div>
+
+  <script>
+    // Set year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Tiny config helper: if the links are still placeholders, show a notice.
+    const stripeLink = document.getElementById('buyBtn').href;
+    const calendlyLink = document.getElementById('zoomBtn').href;
+    const notice = document.getElementById('notice');
+
+    const isPlaceholder = (url) => url.includes("example.com/stripe-payment-link") || url.includes("example.com/calendly-parent-zoom");
+
+    if (isPlaceholder(stripeLink) || isPlaceholder(calendlyLink)) {
+      notice.style.display = 'block';
+      notice.innerHTML = `
+        <strong>Setup needed:</strong> Replace the example Stripe + Calendly links in the HTML
+        (search for <em>example.com</em>).`;
+    }
+  </script>
+</body>
+</html>
