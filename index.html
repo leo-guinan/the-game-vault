@@ -138,14 +138,44 @@
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
     }
+    .page::before{
+      content:"";
+      position: absolute;
+      inset: 0;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 600px at 30% 35%, rgba(124,255,178,.08), transparent 60%),
+        radial-gradient(800px 500px at 75% 30%, rgba(246,211,101,.06), transparent 55%);
+      opacity: .9;
+    }
+    
     .page{
       scroll-snap-align: start;
       min-height: calc(100vh - 64px);
-      padding: 34px 18px 70px;
+      padding: 34px 18px;
+      display: flex;
+      align-items: stretch;
+      position: relative;
     }
+
+    /* pageInner becomes a full-height container */
     .pageInner{
+      position: relative; 
+      z-index: 1; 
       max-width: var(--max);
       margin: 0 auto;
+      width: 100%;
+      min-height: calc(100vh - 64px - 68px); /* account for padding */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* A "stage" that expands and centers the main content */
+    .stage{
+      flex: 1;
+      display: flex;
+      align-items: center;     /* vertical centering */
+      justify-content: center; /* horizontal centering */
     }
 
     /* Page styling */
@@ -182,16 +212,19 @@
       background: var(--accent);
       box-shadow: 0 0 0 4px rgba(124,255,178,.12);
     }
+    /* Your two-column layout can breathe more */
     .grid2{
-      display:grid;
+      width: 100%;
+      display: grid;
       grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-      align-items: start;
+      gap: 18px;
+      align-items: stretch;
     }
+    
     @media (max-width: 900px){
+      .stage{ align-items: flex-start; } /* on mobile, start at top */
       .grid2{ grid-template-columns: 1fr; }
     }
-
     .tile{
       padding: 18px;
       border-radius: var(--radius);
@@ -291,7 +324,18 @@
       background: rgba(255,255,255,.22);
     }
     .pill.on{ background: rgba(124,255,178,.9); box-shadow: 0 0 0 4px rgba(124,255,178,.12); }
-
+    /* Make the main cards feel like they fill the screen */
+    .heroCard{
+      padding: 32px !important;
+    }
+    
+    .sideCard{
+      padding: 24px !important;
+    }
+    
+    @media (max-width: 900px){
+      .heroCard, .sideCard{ padding: 22px !important; }
+    }
     /* Footer */
     .foot{
       margin-top: 18px;
@@ -341,63 +385,66 @@
     <!-- PAGE 1: HOME -->
     <section class="page" id="home" data-page="Home">
       <div class="pageInner">
-        <div class="grid2">
-          <div class="card" style="padding:26px;">
-            <div class="kicker"><span class="dot"></span> Parent-verified • Moderated • Invite-only</div>
-
-            <h1 class="sectionTitle" style="margin-top:12px;">
-              A safe Discord clubhouse<br/>for kids who love games.
-            </h1>
-
-            <p class="sectionSub">
-              One-time <b>$20</b> membership. After checkout, we email a parent/guardian to schedule a quick Zoom
-              to verify age, answer questions, and introduce your child to the server host.
-            </p>
-
-            <div class="badges" aria-label="Trust badges">
-              <div class="badge"><span>✓</span> No public invite links</div>
-              <div class="badge"><span>✓</span> Clear rules</div>
-              <div class="badge"><span>✓</span> Active moderation</div>
-              <div class="badge"><span>✓</span> Parent contact path</div>
-            </div>
-
-            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-              <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
-              <a class="btn btnGhost" href="#how" data-jump="how">See how it works</a>
-              <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
-            </div>
-
-            <p style="margin:14px 0 0; color: var(--muted); font-size: 13px;">
-              Parents/guardians: We do not provide Discord access until the verification call is complete.
-            </p>
-          </div>
-
-          <aside class="card" style="padding:20px;">
-            <div class="priceBox">
-              <div class="priceRow">
-                <strong>$20</strong>
-                <small>one-time payment</small>
+        <div class="stage">
+          <div class="grid2">
+            <div class="card heroCard" style="padding:26px;">
+              <div class="kicker"><span class="dot"></span> Parent-verified • Moderated • Invite-only</div>
+  
+              <h1 class="sectionTitle" style="margin-top:12px;">
+                A safe Discord clubhouse<br/>for kids who love games.
+              </h1>
+  
+              <p class="sectionSub">
+                One-time <b>$20</b> membership. After checkout, we email a parent/guardian to schedule a quick Zoom
+                to verify age, answer questions, and introduce your child to the server host.
+              </p>
+  
+              <div class="badges" aria-label="Trust badges">
+                <div class="badge"><span>✓</span> No public invite links</div>
+                <div class="badge"><span>✓</span> Clear rules</div>
+                <div class="badge"><span>✓</span> Active moderation</div>
+                <div class="badge"><span>✓</span> Parent contact path</div>
               </div>
-              <ul>
-                <li>Invite-only Discord access</li>
-                <li>Parent verification Zoom (≈10 min)</li>
-                <li>Onboarding checklist + rules</li>
-                <li>Events & hangouts</li>
-              </ul>
+  
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+                <a class="btn btnGhost" href="#how" data-jump="how">See how it works</a>
+                <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
+              </div>
+  
+              <p style="margin:14px 0 0; color: var(--muted); font-size: 13px;">
+                Parents/guardians: We do not provide Discord access until the verification call is complete.
+              </p>
             </div>
-
-            <div class="tile" style="margin-top:14px;">
-              <h4>Who this is for</h4>
-              <p>Kids who love games and want a friendly place to talk, team up, and hang out — without public-server chaos.</p>
-            </div>
-          </aside>
-        </div>
-
-        <div class="foot">
-          <div>Scroll or use the nav to move between pages.</div>
-          <div class="miniLinks">
-            <a href="#how" data-jump="how">Next: How it works →</a>
+  
+            <aside class="card sideCard" style="padding:20px;">
+              <div class="priceBox">
+                <div class="priceRow">
+                  <strong>$20</strong>
+                  <small>one-time payment</small>
+                </div>
+                <ul>
+                  <li>Invite-only Discord access</li>
+                  <li>Parent verification Zoom (≈10 min)</li>
+                  <li>Onboarding checklist + rules</li>
+                  <li>Events & hangouts</li>
+                </ul>
+              </div>
+  
+              <div class="tile" style="margin-top:14px;">
+                <h4>Who this is for</h4>
+                <p>Kids who love games and want a friendly place to talk, team up, and hang out — without public-server chaos.</p>
+              </div>
+            </aside>
           </div>
+
+          <div class="foot">
+            <div>Scroll or use the nav to move between pages.</div>
+            <div class="miniLinks">
+              <a href="#how" data-jump="how">Next: How it works →</a>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -407,69 +454,71 @@
       <div class="pageInner">
         <h2 class="sectionTitle">How it works</h2>
         <p class="sectionSub">We keep it simple: pay once, parent verification, then access.</p>
+        <div class="stage">
 
-        <div class="grid2">
-          <div class="card" style="padding:20px;">
-            <div class="steps">
-              <div class="step">
-                <div class="num">1</div>
-                <div>
-                  <b>Pay $20 once</b>
-                  <p>Checkout on this site.</p>
+          <div class="grid2">
+            <div class="card" style="padding:20px;">
+              <div class="steps">
+                <div class="step">
+                  <div class="num">1</div>
+                  <div>
+                    <b>Pay $20 once</b>
+                    <p>Checkout on this site.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">2</div>
+                  <div>
+                    <b>Parent/guardian email</b>
+                    <p>We send a booking link and what to expect.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">3</div>
+                  <div>
+                    <b>Quick Zoom verification</b>
+                    <p>Verify age + meet the host + ask questions.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="num">4</div>
+                  <div>
+                    <b>Discord invite unlocked</b>
+                    <p>Private invite + onboarding checklist + rules.</p>
+                  </div>
                 </div>
               </div>
-              <div class="step">
-                <div class="num">2</div>
-                <div>
-                  <b>Parent/guardian email</b>
-                  <p>We send a booking link and what to expect.</p>
-                </div>
+            </div>
+  
+            <div class="card" style="padding:20px;">
+              <div class="tile">
+                <h4>What the parent Zoom covers</h4>
+                <ul>
+                  <li>Confirm your child is in the intended age range</li>
+                  <li>Review rules (no bullying, no personal info, respect)</li>
+                  <li>Intro your child to the host</li>
+                  <li>Answer parent questions</li>
+                </ul>
               </div>
-              <div class="step">
-                <div class="num">3</div>
-                <div>
-                  <b>Quick Zoom verification</b>
-                  <p>Verify age + meet the host + ask questions.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="num">4</div>
-                <div>
-                  <b>Discord invite unlocked</b>
-                  <p>Private invite + onboarding checklist + rules.</p>
+  
+              <div class="tile" style="margin-top:14px;">
+                <h4>Ready?</h4>
+                <p style="color:var(--muted); margin:0 0 12px;">Start with checkout, or book the Zoom if you want to ask questions first.</p>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+                  <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="card" style="padding:20px;">
-            <div class="tile">
-              <h4>What the parent Zoom covers</h4>
-              <ul>
-                <li>Confirm your child is in the intended age range</li>
-                <li>Review rules (no bullying, no personal info, respect)</li>
-                <li>Intro your child to the host</li>
-                <li>Answer parent questions</li>
-              </ul>
+  
+          <div class="foot">
+            <div class="miniLinks">
+              <a href="#home" data-jump="home">← Home</a>
+              <a href="#safety" data-jump="safety">Next: Safety →</a>
             </div>
-
-            <div class="tile" style="margin-top:14px;">
-              <h4>Ready?</h4>
-              <p style="color:var(--muted); margin:0 0 12px;">Start with checkout, or book the Zoom if you want to ask questions first.</p>
-              <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
-                <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
-              </div>
-            </div>
+            <div>© <span id="year"></span> The Game Vault</div>
           </div>
-        </div>
-
-        <div class="foot">
-          <div class="miniLinks">
-            <a href="#home" data-jump="home">← Home</a>
-            <a href="#safety" data-jump="safety">Next: Safety →</a>
-          </div>
-          <div>© <span id="year"></span> The Game Vault</div>
         </div>
       </div>
     </section>
@@ -481,43 +530,45 @@
         <p class="sectionSub">
           The Game Vault is intentionally private: no public invite links, parent verification, clear rules, and active moderation.
         </p>
+        <div class="stage">
 
-        <div class="grid2">
-          <div class="card" style="padding:20px;">
-            <h3 style="margin:0 0 10px; font-size:18px;">Safety & moderation basics</h3>
-            <ul>
-              <li><b>Invite-only:</b> no public links</li>
-              <li><b>Verification call:</b> parent/guardian required</li>
-              <li><b>No personal info:</b> no addresses, schools, phone numbers</li>
-              <li><b>Zero tolerance:</b> bullying/harassment/slurs</li>
-              <li><b>Reporting path:</b> kids + parents can contact an admin</li>
-            </ul>
-          </div>
-
-          <div class="card" style="padding:20px;">
-            <div class="tile">
-              <h4>Meet the host</h4>
-              <p>
-                The server is hosted by <b>(your son)</b>, a kid who loves games and community.
-                He welcomes new members, runs events, and keeps things fun — while an adult admin oversees safety.
-              </p>
+          <div class="grid2">
+            <div class="card" style="padding:20px;">
+              <h3 style="margin:0 0 10px; font-size:18px;">Safety & moderation basics</h3>
+              <ul>
+                <li><b>Invite-only:</b> no public links</li>
+                <li><b>Verification call:</b> parent/guardian required</li>
+                <li><b>No personal info:</b> no addresses, schools, phone numbers</li>
+                <li><b>Zero tolerance:</b> bullying/harassment/slurs</li>
+                <li><b>Reporting path:</b> kids + parents can contact an admin</li>
+              </ul>
             </div>
-
-            <div class="tile" style="margin-top:14px;">
-              <h4>Parent contact path</h4>
-              <p style="color:var(--muted); margin:0;">
-                Parents can reach the admin anytime via email. If you want, add a parent-only Discord channel later.
-              </p>
+  
+            <div class="card" style="padding:20px;">
+              <div class="tile">
+                <h4>Meet the host</h4>
+                <p>
+                  The server is hosted by <b>(your son)</b>, a kid who loves games and community.
+                  He welcomes new members, runs events, and keeps things fun — while an adult admin oversees safety.
+                </p>
+              </div>
+  
+              <div class="tile" style="margin-top:14px;">
+                <h4>Parent contact path</h4>
+                <p style="color:var(--muted); margin:0;">
+                  Parents can reach the admin anytime via email. If you want, add a parent-only Discord channel later.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="foot">
-          <div class="miniLinks">
-            <a href="#how" data-jump="how">← How it works</a>
-            <a href="#faq" data-jump="faq">Next: FAQ →</a>
+  
+          <div class="foot">
+            <div class="miniLinks">
+              <a href="#how" data-jump="how">← How it works</a>
+              <a href="#faq" data-jump="faq">Next: FAQ →</a>
+            </div>
+            <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
           </div>
-          <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
         </div>
       </div>
     </section>
@@ -527,45 +578,47 @@
       <div class="pageInner">
         <h2 class="sectionTitle">FAQ</h2>
         <p class="sectionSub">Parents/guardians: you’re the customer. Questions are welcome.</p>
+        <div class="stage">
 
-        <div class="card" style="padding:20px;">
-          <details>
-            <summary>What ages is this for?</summary>
-            <p>Set your intended range here (example: ages 10–14). We confirm during the parent verification call.</p>
-          </details>
-
-          <details>
-            <summary>What happens on the Zoom call?</summary>
-            <p>It’s a short (≈10 min) parent/guardian call to verify age, review rules, and do a friendly intro to the host. Discord access is sent after the call.</p>
-          </details>
-
-          <details>
-            <summary>Do parents need Discord?</summary>
-            <p>No. Parents don’t need to join Discord—just an email address to receive updates and contact an admin if needed.</p>
-          </details>
-
-          <details>
-            <summary>How is the server moderated?</summary>
-            <p>Invite-only access, clear rules, and active moderation. Members who break rules are removed, especially around bullying, harassment, or sharing personal info.</p>
-          </details>
-
-          <details>
-            <summary>Is this a one-time payment?</summary>
-            <p>Yes — $20 one time. No monthly subscription.</p>
-          </details>
-
-          <details>
-            <summary>What’s the refund policy?</summary>
-            <p>Add your policy here (example: “If we can’t complete verification or it’s not a fit, we’ll refund within 7 days.”).</p>
-          </details>
-        </div>
-
-        <div class="foot">
-          <div class="miniLinks">
-            <a href="#safety" data-jump="safety">← Safety</a>
-            <a href="#join" data-jump="join">Next: Join →</a>
+          <div class="card" style="padding:20px;">
+            <details>
+              <summary>What ages is this for?</summary>
+              <p>Set your intended range here (example: ages 10–14). We confirm during the parent verification call.</p>
+            </details>
+  
+            <details>
+              <summary>What happens on the Zoom call?</summary>
+              <p>It’s a short (≈10 min) parent/guardian call to verify age, review rules, and do a friendly intro to the host. Discord access is sent after the call.</p>
+            </details>
+  
+            <details>
+              <summary>Do parents need Discord?</summary>
+              <p>No. Parents don’t need to join Discord—just an email address to receive updates and contact an admin if needed.</p>
+            </details>
+  
+            <details>
+              <summary>How is the server moderated?</summary>
+              <p>Invite-only access, clear rules, and active moderation. Members who break rules are removed, especially around bullying, harassment, or sharing personal info.</p>
+            </details>
+  
+            <details>
+              <summary>Is this a one-time payment?</summary>
+              <p>Yes — $20 one time. No monthly subscription.</p>
+            </details>
+  
+            <details>
+              <summary>What’s the refund policy?</summary>
+              <p>Add your policy here (example: “If we can’t complete verification or it’s not a fit, we’ll refund within 7 days.”).</p>
+            </details>
           </div>
-          <div>© <span id="year2"></span> The Game Vault</div>
+  
+          <div class="foot">
+            <div class="miniLinks">
+              <a href="#safety" data-jump="safety">← Safety</a>
+              <a href="#join" data-jump="join">Next: Join →</a>
+            </div>
+            <div>© <span id="year2"></span> The Game Vault</div>
+          </div>
         </div>
       </div>
     </section>
@@ -578,54 +631,56 @@
           One-time membership. After checkout, we email a parent/guardian to schedule the verification Zoom.
           Discord access is unlocked after the call.
         </p>
+        <div class="stage">
 
-        <div class="grid2">
-          <div class="card" style="padding:20px;">
-            <div class="priceBox">
-              <div class="priceRow">
-                <strong>$20</strong>
-                <small>one-time payment</small>
+          <div class="grid2">
+            <div class="card" style="padding:20px;">
+              <div class="priceBox">
+                <div class="priceRow">
+                  <strong>$20</strong>
+                  <small>one-time payment</small>
+                </div>
+                <ul>
+                  <li>Invite-only Discord access</li>
+                  <li>Parent verification Zoom (≈10 min)</li>
+                  <li>Onboarding checklist + rules</li>
+                  <li>Events & hangouts</li>
+                </ul>
               </div>
-              <ul>
-                <li>Invite-only Discord access</li>
-                <li>Parent verification Zoom (≈10 min)</li>
-                <li>Onboarding checklist + rules</li>
-                <li>Events & hangouts</li>
-              </ul>
+  
+              <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
+                <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+                <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
+              </div>
+  
+              <p style="margin:12px 0 0; color: var(--muted); font-size: 13px;">
+                Tip: If you want to talk first, book the parent Zoom before checkout.
+              </p>
             </div>
-
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
-              <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
-              <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
-            </div>
-
-            <p style="margin:12px 0 0; color: var(--muted); font-size: 13px;">
-              Tip: If you want to talk first, book the parent Zoom before checkout.
-            </p>
-          </div>
-
-          <div class="card" style="padding:20px;">
-            <h3 style="margin:0 0 10px; font-size:18px;">After you join</h3>
-            <div class="steps">
-              <div class="step">
-                <div class="num">1</div>
-                <div><b>Check your email</b><p>We’ll send next steps to a parent/guardian.</p></div>
+  
+            <div class="card" style="padding:20px;">
+              <h3 style="margin:0 0 10px; font-size:18px;">After you join</h3>
+              <div class="steps">
+                <div class="step">
+                  <div class="num">1</div>
+                  <div><b>Check your email</b><p>We’ll send next steps to a parent/guardian.</p></div>
+                </div>
+                <div class="step">
+                  <div class="num">2</div>
+                  <div><b>Do the quick Zoom</b><p>Verify age, review rules, meet the host.</p></div>
+                </div>
+                <div class="step">
+                  <div class="num">3</div>
+                  <div><b>Get the private invite</b><p>We send the Discord invite + onboarding checklist.</p></div>
+                </div>
               </div>
-              <div class="step">
-                <div class="num">2</div>
-                <div><b>Do the quick Zoom</b><p>Verify age, review rules, meet the host.</p></div>
+  
+              <div class="foot" style="margin-top: 14px;">
+                <div class="miniLinks">
+                  <a href="#home" data-jump="home">← Back to Home</a>
+                </div>
+                <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
               </div>
-              <div class="step">
-                <div class="num">3</div>
-                <div><b>Get the private invite</b><p>We send the Discord invite + onboarding checklist.</p></div>
-              </div>
-            </div>
-
-            <div class="foot" style="margin-top: 14px;">
-              <div class="miniLinks">
-                <a href="#home" data-jump="home">← Back to Home</a>
-              </div>
-              <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
             </div>
           </div>
         </div>
