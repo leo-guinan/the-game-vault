@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="The Game Vault — an invite-only Discord clubhouse for kids who love games. $20 one-time membership + parent verification Zoom." />
+  <meta name="description" content="The Game Vault — invite-only Discord for kids who love games. $20 one-time membership + parent verification Zoom." />
   <title>The Game Vault</title>
 
   <style>
@@ -14,52 +14,69 @@
       --text: #EAF0FF;
       --muted:#A9B4D0;
       --line: rgba(255,255,255,.10);
-      --accent:#7CFFB2;   /* vault green */
-      --accent2:#F6D365;  /* warm gold */
-      --danger:#FF5C7A;
+      --accent:#7CFFB2;
+      --accent2:#F6D365;
       --shadow: 0 18px 60px rgba(0,0,0,.45);
       --radius: 18px;
       --radius2: 26px;
       --max: 1120px;
     }
 
-    *{ box-sizing: border-box; }
-    html,body{ height:100%; }
+    *{ box-sizing:border-box; }
+    html, body { height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background: radial-gradient(1200px 900px at 20% -10%, rgba(124,255,178,.18), transparent 60%),
                   radial-gradient(900px 700px at 95% 5%, rgba(246,211,101,.14), transparent 55%),
                   radial-gradient(900px 700px at 60% 120%, rgba(124,255,178,.10), transparent 50%),
                   var(--bg);
       color: var(--text);
       line-height:1.5;
+      overflow: hidden; /* we will scroll inside .scroller */
     }
 
-    a{ color: inherit; }
-    .wrap{ max-width: var(--max); margin:0 auto; padding: 28px 18px 70px; }
+    a{ color:inherit; }
 
-    /* Top bar */
+    /* Sticky top bar */
     .top{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px; padding: 10px 0 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(7,10,18,.55);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .topInner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
     }
     .brand{
       display:flex; align-items:center; gap:12px; text-decoration:none;
+      min-width: 220px;
     }
     .logo{
       width:40px; height:40px; border-radius: 12px;
       background: linear-gradient(135deg, rgba(124,255,178,.95), rgba(246,211,101,.95));
       display:grid; place-items:center; color:#0B1020; font-weight:900;
       box-shadow: 0 12px 30px rgba(124,255,178,.18);
+      flex: 0 0 auto;
     }
-    .brand h1{ margin:0; font-size: 16px; letter-spacing:.2px; }
-    .brand p{ margin:0; font-size: 12px; color: var(--muted); }
+    .brandTitle{ margin:0; font-size: 15px; letter-spacing:.2px; }
+    .brandSub{ margin:0; font-size: 12px; color: var(--muted); }
 
     .nav{
       display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+      align-items:center;
     }
-    .chip{
+    .nav a{
       border:1px solid var(--line);
       background: rgba(255,255,255,.04);
       color: var(--muted);
@@ -67,21 +84,71 @@
       border-radius: 999px;
       text-decoration:none;
       font-size: 13px;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+      white-space: nowrap;
     }
-    .chip:hover{ background: rgba(255,255,255,.07); color: var(--text); }
-
-    /* Hero */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
-      align-items: stretch;
-      margin-top: 6px;
-    }
-    @media (max-width: 900px){
-      .hero{ grid-template-columns: 1fr; }
+    .nav a:hover{ background: rgba(255,255,255,.07); color: var(--text); }
+    .nav a.active{
+      background: rgba(124,255,178,.14);
+      border-color: rgba(124,255,178,.35);
+      color: var(--text);
     }
 
+    /* Primary CTA (top right on larger screens) */
+    .topCta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      border:0;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 750;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      cursor:pointer;
+      transition: transform .08s ease, filter .15s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0B1020;
+      box-shadow: 0 16px 40px rgba(124,255,178,.16);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    @media (max-width: 920px){
+      .brandSub{ display:none; }
+      .topCta{ display:none; }
+    }
+
+    /* Multi-page scroller */
+    .scroller{
+      position: fixed;
+      top: 64px; /* height of top bar */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .page{
+      scroll-snap-align: start;
+      min-height: calc(100vh - 64px);
+      padding: 34px 18px 70px;
+    }
+    .pageInner{
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* Page styling */
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border: 1px solid var(--line);
@@ -89,8 +156,18 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-
-    .heroMain{ padding: 26px; position:relative; }
+    .sectionTitle{
+      margin: 0 0 10px;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .sectionSub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      max-width: 72ch;
+      font-size: 16px;
+    }
     .kicker{
       display:inline-flex; align-items:center; gap:8px;
       font-size: 13px;
@@ -105,23 +182,28 @@
       background: var(--accent);
       box-shadow: 0 0 0 4px rgba(124,255,178,.12);
     }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 900px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
 
-    .heroMain h2{
-      margin: 14px 0 8px;
-      font-size: clamp(30px, 4vw, 44px);
-      line-height:1.08;
-      letter-spacing: -0.6px;
+    .tile{
+      padding: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.20);
     }
-    .heroMain .sub{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 60ch;
-    }
+    .tile h4{ margin:0 0 8px; font-size: 16px; }
+    .tile p{ margin:0; color: var(--muted); font-size: 14px; }
 
     .badges{
       display:flex; flex-wrap:wrap; gap:10px;
-      margin: 14px 0 22px;
+      margin: 14px 0 18px;
     }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
@@ -137,117 +219,41 @@
       display:grid; place-items:center;
       background: rgba(124,255,178,.12);
       color: var(--accent);
-      font-weight:800;
+      font-weight:900;
     }
 
-    .ctaRow{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-    .btn{
-      border:0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-weight: 700;
-      text-decoration:none;
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px;
-      cursor:pointer;
-      transition: transform .08s ease, filter .15s ease;
-      user-select:none;
-    }
-    .btn:active{ transform: translateY(1px) scale(.99); }
-
-    .btnPrimary{
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #0B1020;
-      box-shadow: 0 16px 40px rgba(124,255,178,.16);
-    }
-    .btnSecondary{
-      background: rgba(255,255,255,.06);
-      border: 1px solid var(--line);
-      color: var(--text);
-    }
-    .finePrint{
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .heroSide{ padding: 20px; display:flex; flex-direction:column; gap:12px; }
     .priceBox{
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.22);
-    }
-    .price{
-      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
-      margin-bottom: 10px;
-    }
-    .price strong{ font-size: 30px; letter-spacing:-.3px; }
-    .price small{ color: var(--muted); font-size: 13px; }
-    .includes{ margin:0; padding-left: 18px; color: var(--muted); font-size: 14px; }
-    .includes li{ margin: 8px 0; }
-
-    .steps{
       padding: 18px;
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background: rgba(255,255,255,.03);
     }
-    .step{
+    .priceRow{
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .priceRow strong{ font-size: 30px; letter-spacing:-.3px; }
+    .priceRow small{ color: var(--muted); font-size: 13px; }
+    ul{ margin:0; padding-left: 18px; color: var(--muted); }
+    li{ margin: 8px 0; }
+
+    .steps .step{
       display:flex; gap:12px; padding: 10px 0;
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .step:last-child{ border-bottom: 0; }
+    .steps .step:last-child{ border-bottom:0; }
     .num{
       width:28px; height:28px; border-radius: 10px;
       background: rgba(124,255,178,.12);
       color: var(--accent);
       display:grid; place-items:center;
-      font-weight: 800;
+      font-weight: 900;
       flex: 0 0 auto;
     }
     .step b{ display:block; }
     .step p{ margin:2px 0 0; color: var(--muted); font-size: 13px; }
 
-    /* Sections */
-    section{ margin-top: 26px; }
-    .sectionTitle{
-      margin: 0 0 10px;
-      font-size: 22px;
-      letter-spacing:-.2px;
-    }
-    .sectionSub{ margin:0 0 16px; color: var(--muted); max-width: 70ch; }
-
-    .grid3{
-      display:grid; grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    @media (max-width: 900px){ .grid3{ grid-template-columns: 1fr; } }
-
-    .tile{
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-    }
-    .tile h4{ margin: 0 0 8px; font-size: 16px; }
-    .tile p{ margin:0; color: var(--muted); font-size: 14px; }
-
-    .callout{
-      padding: 18px;
-      border-radius: var(--radius2);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(124,255,178,.10), rgba(255,255,255,.02));
-    }
-
-    .split{
-      display:grid; grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    @media (max-width: 900px){ .split{ grid-template-columns: 1fr; } }
-
     /* FAQ */
-    .faq{ margin-top: 8px; }
     details{
       border:1px solid var(--line);
       background: rgba(255,255,255,.03);
@@ -257,15 +263,38 @@
     }
     summary{
       cursor:pointer;
-      font-weight: 700;
+      font-weight: 800;
       list-style:none;
     }
     summary::-webkit-details-marker{ display:none; }
     details p{ color: var(--muted); margin: 10px 0 0; }
 
+    /* Bottom helper (page indicator) */
+    .pager{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 60;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(7,10,18,.55);
+      backdrop-filter: blur(10px);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pill{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: rgba(255,255,255,.22);
+    }
+    .pill.on{ background: rgba(124,255,178,.9); box-shadow: 0 0 0 4px rgba(124,255,178,.12); }
+
     /* Footer */
-    footer{
-      margin-top: 34px;
+    .foot{
+      margin-top: 18px;
       padding-top: 18px;
       border-top: 1px solid rgba(255,255,255,.10);
       color: var(--muted);
@@ -277,275 +306,394 @@
     }
     .miniLinks a{ color: var(--muted); text-decoration:none; margin-right: 12px; }
     .miniLinks a:hover{ color: var(--text); }
-
-    /* Notice bar */
-    .notice{
-      display:none;
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(124,255,178,.25);
-      background: rgba(124,255,178,.08);
-      color: var(--text);
-    }
-    .notice strong{ color: var(--accent); }
-
-    /* Tiny icon */
-    .arrow{ font-weight: 900; }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="top">
-      <a class="brand" href="#top" aria-label="The Game Vault home">
+  <!-- Top navigation -->
+  <header class="top">
+    <div class="topInner">
+      <a class="brand" href="#home" data-jump="home" aria-label="The Game Vault home">
         <div class="logo">GV</div>
         <div>
-          <h1>The Game Vault</h1>
-          <p>Invite-only Discord for kids who love games</p>
+          <div class="brandTitle">The Game Vault</div>
+          <div class="brandSub">Invite-only Discord for kids who love games</div>
         </div>
       </a>
 
       <nav class="nav" aria-label="Site navigation">
-        <a class="chip" href="#how">How it works</a>
-        <a class="chip" href="#safety">Safety</a>
-        <a class="chip" href="#faq">FAQ</a>
-        <a class="chip" href="#join">Join</a>
+        <a href="#home" data-jump="home" class="active">Home</a>
+        <a href="#how" data-jump="how">How it works</a>
+        <a href="#safety" data-jump="safety">Safety</a>
+        <a href="#faq" data-jump="faq">FAQ</a>
+        <a href="#join" data-jump="join">Join</a>
       </nav>
+
+      <div class="topCta">
+        <a class="btn btnGhost" id="topZoom" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Parent Zoom</a>
+        <a class="btn btnPrimary" id="topBuy" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join $20 →</a>
+      </div>
     </div>
+  </header>
 
-    <main id="top" class="hero">
-      <div class="card heroMain">
-        <div class="kicker"><span class="dot"></span> Parent-verified • Moderated • Invite-only</div>
+  <!-- Scroll pages -->
+  <div class="scroller" id="scroller">
+    <!-- PAGE 1: HOME -->
+    <section class="page" id="home" data-page="Home">
+      <div class="pageInner">
+        <div class="grid2">
+          <div class="card" style="padding:26px;">
+            <div class="kicker"><span class="dot"></span> Parent-verified • Moderated • Invite-only</div>
 
-        <h2>A safe Discord clubhouse<br/>for kids who love games.</h2>
-        <p class="sub">
-          One-time <b>$20</b> membership. After checkout, we email a parent/guardian to schedule a quick Zoom
-          to verify age, answer questions, and introduce your child to the server host.
-        </p>
+            <h1 class="sectionTitle" style="margin-top:12px;">
+              A safe Discord clubhouse<br/>for kids who love games.
+            </h1>
 
-        <div class="badges" aria-label="Trust badges">
-          <div class="badge"><span>✓</span> No public invite links</div>
-          <div class="badge"><span>✓</span> Clear rules</div>
-          <div class="badge"><span>✓</span> Active moderation</div>
-          <div class="badge"><span>✓</span> Parent contact path</div>
-        </div>
+            <p class="sectionSub">
+              One-time <b>$20</b> membership. After checkout, we email a parent/guardian to schedule a quick Zoom
+              to verify age, answer questions, and introduce your child to the server host.
+            </p>
 
-        <div class="ctaRow" id="join">
-          <!-- Replace these with your real links -->
-          <a class="btn btnPrimary" id="buyBtn" href="https://example.com/stripe-payment-link" target="_blank" rel="noreferrer">
-            Join for $20 <span class="arrow">→</span>
-          </a>
-          <a class="btn btnSecondary" id="howBtn" href="#how">How it works</a>
-          <a class="btn btnSecondary" id="zoomBtn" href="https://example.com/calendly-parent-zoom" target="_blank" rel="noreferrer">
-            Book Parent Zoom
-          </a>
-        </div>
-
-        <div class="notice" id="notice"></div>
-
-        <p class="finePrint">
-          Parents/guardians: You’ll receive an email after checkout with next steps. We do not provide Discord access until the verification call is complete.
-        </p>
-      </div>
-
-      <aside class="card heroSide" aria-label="Membership details">
-        <div class="priceBox">
-          <div class="price">
-            <strong>$20</strong>
-            <small>one-time payment</small>
-          </div>
-          <ul class="includes">
-            <li>Invite-only Discord access</li>
-            <li>Parent verification Zoom (≈10 min)</li>
-            <li>Onboarding checklist + rules</li>
-            <li>Events & hangouts</li>
-          </ul>
-        </div>
-
-        <div class="steps" id="how">
-          <h3 style="margin:0 0 10px; font-size:16px;">How it works</h3>
-
-          <div class="step">
-            <div class="num">1</div>
-            <div>
-              <b>Pay $20 once</b>
-              <p>Use the checkout link on this page.</p>
+            <div class="badges" aria-label="Trust badges">
+              <div class="badge"><span>✓</span> No public invite links</div>
+              <div class="badge"><span>✓</span> Clear rules</div>
+              <div class="badge"><span>✓</span> Active moderation</div>
+              <div class="badge"><span>✓</span> Parent contact path</div>
             </div>
-          </div>
 
-          <div class="step">
-            <div class="num">2</div>
-            <div>
-              <b>Parent email confirmation</b>
-              <p>We email you with a simple booking link.</p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+              <a class="btn btnGhost" href="#how" data-jump="how">See how it works</a>
+              <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
             </div>
+
+            <p style="margin:14px 0 0; color: var(--muted); font-size: 13px;">
+              Parents/guardians: We do not provide Discord access until the verification call is complete.
+            </p>
           </div>
 
-          <div class="step">
-            <div class="num">3</div>
-            <div>
-              <b>Quick Zoom verification</b>
-              <p>Verify age + meet the host + ask questions.</p>
+          <aside class="card" style="padding:20px;">
+            <div class="priceBox">
+              <div class="priceRow">
+                <strong>$20</strong>
+                <small>one-time payment</small>
+              </div>
+              <ul>
+                <li>Invite-only Discord access</li>
+                <li>Parent verification Zoom (≈10 min)</li>
+                <li>Onboarding checklist + rules</li>
+                <li>Events & hangouts</li>
+              </ul>
             </div>
-          </div>
 
-          <div class="step">
-            <div class="num">4</div>
-            <div>
-              <b>Discord invite unlocked</b>
-              <p>We send a private invite and onboarding steps.</p>
+            <div class="tile" style="margin-top:14px;">
+              <h4>Who this is for</h4>
+              <p>Kids who love games and want a friendly place to talk, team up, and hang out — without public-server chaos.</p>
             </div>
+          </aside>
+        </div>
+
+        <div class="foot">
+          <div>Scroll or use the nav to move between pages.</div>
+          <div class="miniLinks">
+            <a href="#how" data-jump="how">Next: How it works →</a>
           </div>
-        </div>
-      </aside>
-    </main>
-
-    <section>
-      <h3 class="sectionTitle">What kids get inside</h3>
-      <p class="sectionSub">A friendly, moderated space to talk games, find teammates, and hang out—without the chaos of public servers.</p>
-
-      <div class="grid3">
-        <div class="tile">
-          <h4>Hangouts & chat</h4>
-          <p>Text + voice channels built for chilling, not drama.</p>
-        </div>
-        <div class="tile">
-          <h4>Find teammates</h4>
-          <p>Meet kids who play what you play and team up.</p>
-        </div>
-        <div class="tile">
-          <h4>Events</h4>
-          <p>Game nights, challenges, and weekly prompts.</p>
         </div>
       </div>
     </section>
 
-    <section id="safety" class="split">
-      <div class="callout">
-        <h3 class="sectionTitle" style="margin-bottom:6px;">Safety is the product.</h3>
-        <p class="sectionSub" style="margin-bottom:0;">
-          The Game Vault is intentionally private. Everyone joins through a parent/guardian verification step,
-          and we keep clear rules with active moderation.
-        </p>
-      </div>
+    <!-- PAGE 2: HOW IT WORKS -->
+    <section class="page" id="how" data-page="How it works">
+      <div class="pageInner">
+        <h2 class="sectionTitle">How it works</h2>
+        <p class="sectionSub">We keep it simple: pay once, parent verification, then access.</p>
 
-      <div class="tile">
-        <h4 style="margin-top:0;">Safety & moderation basics</h4>
-        <ul class="includes">
-          <li><b>Invite-only:</b> no public links</li>
-          <li><b>Verification call:</b> parent/guardian required</li>
-          <li><b>No personal info:</b> no addresses, schools, phone numbers</li>
-          <li><b>Zero tolerance:</b> bullying/harassment/slurs</li>
-          <li><b>Reporting path:</b> kids + parents can contact an admin</li>
-        </ul>
+        <div class="grid2">
+          <div class="card" style="padding:20px;">
+            <div class="steps">
+              <div class="step">
+                <div class="num">1</div>
+                <div>
+                  <b>Pay $20 once</b>
+                  <p>Checkout on this site.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="num">2</div>
+                <div>
+                  <b>Parent/guardian email</b>
+                  <p>We send a booking link and what to expect.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="num">3</div>
+                <div>
+                  <b>Quick Zoom verification</b>
+                  <p>Verify age + meet the host + ask questions.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="num">4</div>
+                <div>
+                  <b>Discord invite unlocked</b>
+                  <p>Private invite + onboarding checklist + rules.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="padding:20px;">
+            <div class="tile">
+              <h4>What the parent Zoom covers</h4>
+              <ul>
+                <li>Confirm your child is in the intended age range</li>
+                <li>Review rules (no bullying, no personal info, respect)</li>
+                <li>Intro your child to the host</li>
+                <li>Answer parent questions</li>
+              </ul>
+            </div>
+
+            <div class="tile" style="margin-top:14px;">
+              <h4>Ready?</h4>
+              <p style="color:var(--muted); margin:0 0 12px;">Start with checkout, or book the Zoom if you want to ask questions first.</p>
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+                <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div class="miniLinks">
+            <a href="#home" data-jump="home">← Home</a>
+            <a href="#safety" data-jump="safety">Next: Safety →</a>
+          </div>
+          <div>© <span id="year"></span> The Game Vault</div>
+        </div>
       </div>
     </section>
 
-    <section class="split">
-      <div class="tile">
-        <h3 class="sectionTitle">Meet the host</h3>
+    <!-- PAGE 3: SAFETY -->
+    <section class="page" id="safety" data-page="Safety">
+      <div class="pageInner">
+        <h2 class="sectionTitle">Safety is the product.</h2>
         <p class="sectionSub">
-          The server is hosted by <b>(your son)</b>, a kid who loves games and community. He welcomes new members,
-          runs events, and keeps the vibe fun—while an adult admin oversees safety and moderation.
+          The Game Vault is intentionally private: no public invite links, parent verification, clear rules, and active moderation.
         </p>
-        <p class="sectionSub" style="margin-bottom:0;">
-          On the parent Zoom, we’ll do a quick intro and answer any questions.
-        </p>
-      </div>
 
-      <div class="tile">
-        <h3 class="sectionTitle">One-time membership</h3>
-        <p class="sectionSub">
-          Pay once, get access after verification. No recurring charges.
-        </p>
-        <div class="ctaRow">
-          <a class="btn btnPrimary" href="https://example.com/stripe-payment-link" target="_blank" rel="noreferrer">
-            Join for $20 <span class="arrow">→</span>
-          </a>
-          <a class="btn btnSecondary" href="https://example.com/calendly-parent-zoom" target="_blank" rel="noreferrer">
-            Book Parent Zoom
-          </a>
+        <div class="grid2">
+          <div class="card" style="padding:20px;">
+            <h3 style="margin:0 0 10px; font-size:18px;">Safety & moderation basics</h3>
+            <ul>
+              <li><b>Invite-only:</b> no public links</li>
+              <li><b>Verification call:</b> parent/guardian required</li>
+              <li><b>No personal info:</b> no addresses, schools, phone numbers</li>
+              <li><b>Zero tolerance:</b> bullying/harassment/slurs</li>
+              <li><b>Reporting path:</b> kids + parents can contact an admin</li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding:20px;">
+            <div class="tile">
+              <h4>Meet the host</h4>
+              <p>
+                The server is hosted by <b>(your son)</b>, a kid who loves games and community.
+                He welcomes new members, runs events, and keeps things fun — while an adult admin oversees safety.
+              </p>
+            </div>
+
+            <div class="tile" style="margin-top:14px;">
+              <h4>Parent contact path</h4>
+              <p style="color:var(--muted); margin:0;">
+                Parents can reach the admin anytime via email. If you want, add a parent-only Discord channel later.
+              </p>
+            </div>
+          </div>
         </div>
-        <p class="finePrint">Replace the example links in the HTML with your Stripe + Calendly links.</p>
+
+        <div class="foot">
+          <div class="miniLinks">
+            <a href="#how" data-jump="how">← How it works</a>
+            <a href="#faq" data-jump="faq">Next: FAQ →</a>
+          </div>
+          <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
+        </div>
       </div>
     </section>
 
-    <section id="faq">
-      <h3 class="sectionTitle">FAQ</h3>
-      <p class="sectionSub">If you’re a parent/guardian, you’re the customer. Questions are welcome.</p>
+    <!-- PAGE 4: FAQ -->
+    <section class="page" id="faq" data-page="FAQ">
+      <div class="pageInner">
+        <h2 class="sectionTitle">FAQ</h2>
+        <p class="sectionSub">Parents/guardians: you’re the customer. Questions are welcome.</p>
 
-      <div class="faq">
-        <details>
-          <summary>What ages is this for?</summary>
-          <p>Set your intended range here (example: ages 10–14). We confirm during the parent verification call.</p>
-        </details>
+        <div class="card" style="padding:20px;">
+          <details>
+            <summary>What ages is this for?</summary>
+            <p>Set your intended range here (example: ages 10–14). We confirm during the parent verification call.</p>
+          </details>
 
-        <details>
-          <summary>What happens on the Zoom call?</summary>
-          <p>It’s a short (≈10 min) parent/guardian call to verify age, review rules, and do a friendly intro to the host. Discord access is sent after the call.</p>
-        </details>
+          <details>
+            <summary>What happens on the Zoom call?</summary>
+            <p>It’s a short (≈10 min) parent/guardian call to verify age, review rules, and do a friendly intro to the host. Discord access is sent after the call.</p>
+          </details>
 
-        <details>
-          <summary>Do parents need Discord?</summary>
-          <p>No. Parents don’t need to join Discord—just an email address to receive updates and a way to contact an admin if needed.</p>
-        </details>
+          <details>
+            <summary>Do parents need Discord?</summary>
+            <p>No. Parents don’t need to join Discord—just an email address to receive updates and contact an admin if needed.</p>
+          </details>
 
-        <details>
-          <summary>How is the server moderated?</summary>
-          <p>Invite-only access, clear rules, and active moderation. We remove members who break rules, especially around bullying, harassment, or sharing personal info.</p>
-        </details>
+          <details>
+            <summary>How is the server moderated?</summary>
+            <p>Invite-only access, clear rules, and active moderation. Members who break rules are removed, especially around bullying, harassment, or sharing personal info.</p>
+          </details>
 
-        <details>
-          <summary>Is this a one-time payment?</summary>
-          <p>Yes — $20 one time. No monthly subscription.</p>
-        </details>
+          <details>
+            <summary>Is this a one-time payment?</summary>
+            <p>Yes — $20 one time. No monthly subscription.</p>
+          </details>
 
-        <details>
-          <summary>What’s the refund policy?</summary>
-          <p>Add your policy here (example: “If we can’t complete verification or it’s not a fit, we’ll refund within 7 days.”).</p>
-        </details>
+          <details>
+            <summary>What’s the refund policy?</summary>
+            <p>Add your policy here (example: “If we can’t complete verification or it’s not a fit, we’ll refund within 7 days.”).</p>
+          </details>
+        </div>
 
-        <details>
-          <summary>How can parents reach you?</summary>
-          <p>Add your support email below. You can also include a contact form if you want, but GitHub Pages is easiest with email.</p>
-        </details>
+        <div class="foot">
+          <div class="miniLinks">
+            <a href="#safety" data-jump="safety">← Safety</a>
+            <a href="#join" data-jump="join">Next: Join →</a>
+          </div>
+          <div>© <span id="year2"></span> The Game Vault</div>
+        </div>
       </div>
     </section>
 
-    <footer>
-      <div>
-        <div style="font-weight:700; color: var(--text);">The Game Vault</div>
-        <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
-      </div>
+    <!-- PAGE 5: JOIN -->
+    <section class="page" id="join" data-page="Join">
+      <div class="pageInner">
+        <h2 class="sectionTitle">Join The Game Vault</h2>
+        <p class="sectionSub">
+          One-time membership. After checkout, we email a parent/guardian to schedule the verification Zoom.
+          Discord access is unlocked after the call.
+        </p>
 
-      <div class="miniLinks" aria-label="Footer links">
-        <a href="#safety">Safety</a>
-        <a href="#faq">FAQ</a>
-        <a href="#join">Join</a>
-      </div>
+        <div class="grid2">
+          <div class="card" style="padding:20px;">
+            <div class="priceBox">
+              <div class="priceRow">
+                <strong>$20</strong>
+                <small>one-time payment</small>
+              </div>
+              <ul>
+                <li>Invite-only Discord access</li>
+                <li>Parent verification Zoom (≈10 min)</li>
+                <li>Onboarding checklist + rules</li>
+                <li>Events & hangouts</li>
+              </ul>
+            </div>
 
-      <div>© <span id="year"></span> The Game Vault</div>
-    </footer>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:14px;">
+              <a class="btn btnPrimary" href="STRIPE_PAYMENT_LINK" target="_blank" rel="noreferrer">Join for $20 →</a>
+              <a class="btn btnGhost" href="PARENT_ZOOM_LINK" target="_blank" rel="noreferrer">Book Parent Zoom</a>
+            </div>
+
+            <p style="margin:12px 0 0; color: var(--muted); font-size: 13px;">
+              Tip: If you want to talk first, book the parent Zoom before checkout.
+            </p>
+          </div>
+
+          <div class="card" style="padding:20px;">
+            <h3 style="margin:0 0 10px; font-size:18px;">After you join</h3>
+            <div class="steps">
+              <div class="step">
+                <div class="num">1</div>
+                <div><b>Check your email</b><p>We’ll send next steps to a parent/guardian.</p></div>
+              </div>
+              <div class="step">
+                <div class="num">2</div>
+                <div><b>Do the quick Zoom</b><p>Verify age, review rules, meet the host.</p></div>
+              </div>
+              <div class="step">
+                <div class="num">3</div>
+                <div><b>Get the private invite</b><p>We send the Discord invite + onboarding checklist.</p></div>
+              </div>
+            </div>
+
+            <div class="foot" style="margin-top: 14px;">
+              <div class="miniLinks">
+                <a href="#home" data-jump="home">← Back to Home</a>
+              </div>
+              <div>Contact: <a href="mailto:you@example.com">you@example.com</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Page indicator -->
+  <div class="pager" aria-label="Page indicator">
+    <span id="pageLabel">Home</span>
+    <span class="pill on" id="p0"></span>
+    <span class="pill" id="p1"></span>
+    <span class="pill" id="p2"></span>
+    <span class="pill" id="p3"></span>
+    <span class="pill" id="p4"></span>
   </div>
 
   <script>
-    // Set year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Years
+    const y = new Date().getFullYear();
+    const y1 = document.getElementById('year'); if (y1) y1.textContent = y;
+    const y2 = document.getElementById('year2'); if (y2) y2.textContent = y;
 
-    // Tiny config helper: if the links are still placeholders, show a notice.
-    const stripeLink = document.getElementById('buyBtn').href;
-    const calendlyLink = document.getElementById('zoomBtn').href;
-    const notice = document.getElementById('notice');
+    const scroller = document.getElementById('scroller');
+    const navLinks = Array.from(document.querySelectorAll('.nav a[data-jump], a[data-jump]')).filter(a => a.closest('.nav'));
+    const pages = Array.from(document.querySelectorAll('.page'));
+    const pageLabel = document.getElementById('pageLabel');
+    const pills = [0,1,2,3,4].map(i => document.getElementById(`p${i}`)).filter(Boolean);
 
-    const isPlaceholder = (url) => url.includes("example.com/stripe-payment-link") || url.includes("example.com/calendly-parent-zoom");
+    // Smooth jump within scroller
+    document.querySelectorAll('[data-jump]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('data-jump');
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        // scroll so the section's top aligns within the scroller
+        const top = el.offsetTop;
+        scroller.scrollTo({ top, behavior: 'smooth' });
+        history.replaceState(null, '', `#${id}`);
+      });
+    });
 
-    if (isPlaceholder(stripeLink) || isPlaceholder(calendlyLink)) {
-      notice.style.display = 'block';
-      notice.innerHTML = `
-        <strong>Setup needed:</strong> Replace the example Stripe + Calendly links in the HTML
-        (search for <em>example.com</em>).`;
-    }
+    // Observe which page is active to highlight nav + update pager
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+
+      const id = visible.target.id;
+      document.querySelectorAll('.nav a').forEach(a => a.classList.toggle('active', a.getAttribute('data-jump') === id));
+
+      const idx = pages.findIndex(p => p.id === id);
+      if (idx >= 0) {
+        pageLabel.textContent = pages[idx].dataset.page || id;
+        pills.forEach((p,i) => p.classList.toggle('on', i === idx));
+      }
+    }, { root: scroller, threshold: [0.55, 0.7] });
+
+    pages.forEach(p => obs.observe(p));
+
+    // If someone lands on a hash, scroll to that page inside scroller
+    window.addEventListener('load', () => {
+      const hash = (location.hash || '#home').replace('#','');
+      const el = document.getElementById(hash);
+      if (el) scroller.scrollTo({ top: el.offsetTop, behavior: 'instant' });
+    });
   </script>
 </body>
 </html>
